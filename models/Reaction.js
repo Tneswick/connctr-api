@@ -18,14 +18,14 @@ const ReactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: console.log('NOT DONE'), // getter for formatting date
-    }
+      get: (timestamp) => formatDate.apply(timestamp),
+    },
   },
   {
     toJSON: {
       getters: true,
-    }
-  }
+    },
+  },
 );
 
 const Reaction = model('Reaction', ReactionSchema);

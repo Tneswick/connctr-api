@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-// import the getter function for date formatting
+const formatDate = require('../utils/formatDate');
 const reactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema(
@@ -13,7 +13,7 @@ const ThoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: console.log('NOT DONE'),// getter for formatting of the date upon query
+      get: (timestamp) => formatDate.apply(timestamp),
     },
     username: {
       type: String,
@@ -25,8 +25,8 @@ const ThoughtSchema = new Schema(
     toJSON: {
       getters: true,
       virtuals: true,
-    }
-  }
+    },
+  },
 );
 
 ThoughtSchema.virtual('reactionCount').get(function() {
