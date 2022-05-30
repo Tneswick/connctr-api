@@ -58,7 +58,7 @@ const thoughtController = {
   },
 
   reactToThought({ params, body }, res) {
-    Thought.findByIdAndUpdate({ _id: params.id }, { $addToSet: { reactions: body } }, { new: true, runValidators: true })
+    Thought.findByIdAndUpdate({ _id: params.thoughtId }, { $addToSet: { reactions: body } }, { new: true, runValidators: true })
     .then(dbThoughtData => res.json(dbThoughtData))
     .catch(err => {
       console.log(err);
@@ -66,8 +66,8 @@ const thoughtController = {
     })
   },
 
-  deleteReaction({ params }, res) {
-    Thought.findByIdAndUpdate({ _id: params.id }, { $pull: { reactionId: body.reactionId } }, { new: true })
+  deleteReaction({ params, body }, res) {
+    Thought.findByIdAndUpdate({ _id: params.thoughtId }, { $pull: { reactions: { reactionId: body.reactionId } } }, { new: true })
     .then(dbThoughtData => res.json(dbThoughtData))
     .catch(err => {
       console.log(err);
