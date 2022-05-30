@@ -1,4 +1,4 @@
-const { User } = require('../models/User');
+const { User } = require('../models');
 
 const userController = {
   getAllUsers(req, res) {
@@ -34,7 +34,7 @@ const userController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err); // for debug and production purposes only, remove for frontend security
+        res.status(400).json(err);
       })
   },
 
@@ -43,7 +43,7 @@ const userController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err); // for debug and production purposes only, remove for frontend security
+        res.status(400).json(err);
       })
   },
 
@@ -52,16 +52,35 @@ const userController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err); // for debug and production purposes only, remove for frontend security
+        res.status(400).json(err);
       })
   },
 
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
+    // after the promise, pull id from deleted user, delete all thoughts that have that user's id
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
         console.log(err);
-        res.status(400).json(err); // for debug and production purposes only, remove for frontend security
+        res.status(400).json(err);
+      })
+  },
+
+  addFriend({ params }, res) {
+    User.findOneAndUpdate({ _id: params.userId }, { $push: { friends: params.friendId }}, { new: true })
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      })
+  },
+
+  deleteFriend({ params }, res) {
+    User.findOneAndUpdate({ _id: params.userId }, { $pull: { friends: params.friendId }}, { new: true })
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
       })
   }
 }
